@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ropeway-sentry 值守控制台</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <h1>ropeway-sentry</h1>
+    <span class="sub">客运索道钢丝绳与支架安全监测 · 值守控制台</span>
+    <span id="clock"></span>
+  </header>
+
+  <main>
+    <section>
+      <h2>线路看板总览</h2>
+      <ul id="dashboard"><li>加载中…</li></ul>
+    </section>
+
+    <section>
+      <h2>线路状态</h2>
+      <table id="lines">
+        <thead><tr><th>ID</th><th>编码</th><th>名称</th><th>开放等级</th></tr></thead>
+        <tbody><tr><td colspan="4">加载中…</td></tr></tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>告警处置（ack → close，critical 必须先 ack）</h2>
+      <table id="alerts">
+        <thead><tr><th>ID</th><th>级别</th><th>类型</th><th>状态</th><th>次数</th><th>操作</th></tr></thead>
+        <tbody><tr><td colspan="6">加载中…</td></tr></tbody>
+      </table>
+      <div class="row">
+        <input id="alert-id" type="number" placeholder="告警 ID" min="1" style="width:120px">
+        <button onclick="ackAlert()">确认(ack)</button>
+        <button onclick="closeAlert()">关闭(close)</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>遥测批量上报 / 校验和重算</h2>
+      <p class="sub" style="color:var(--muted);font-size:12px;margin:4px 0;">
+        先“重算校验和”回填 checksum，再“提交批次”。points 按规范算法参与 CRC32。
+      </p>
+      <textarea id="payload">{
+  "line": "L1",
+  "window_start": "",
+  "window_end": "",
+  "checksum": 0,
+  "points": [
+    { "sensor": "W-T1", "seq": 1, "taken_at": "", "value": 6.5 }
+  ]
+}</textarea>
+      <div class="row">
+        <button onclick="recompute()">重算校验和</button>
+        <button onclick="ingest()">提交批次</button>
+      </div>
+      <div id="ingest-result"></div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
