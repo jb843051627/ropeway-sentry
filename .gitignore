@@ -1,0 +1,12 @@
+# 版本库忽略清单
+data/
+*.db
+*.db-shm
+*.db-wal
+cases/
+_docker/
+*.py
+metadata/
+bugs_fields.json
+*.pyc
+__pycache__/
