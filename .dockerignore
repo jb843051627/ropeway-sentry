@@ -1,0 +1,6 @@
+.git/
+data/
+_docker/
+*.db
+*.db-shm
+*.db-wal
