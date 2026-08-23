@@ -47,8 +47,12 @@ func CanTransition(from, to LineStatus) bool {
 }
 
 // AllowedTransitions 返回当前状态的合法后继集合。
+// 返回独立副本，调用方 append 不会回写共享的 lineTransitions 表。
 func AllowedTransitions(from LineStatus) []LineStatus {
-	return lineTransitions[from]
+	src := lineTransitions[from]
+	out := make([]LineStatus, len(src))
+	copy(out, src)
+	return out
 }
 
 // AlertSeverity 告警级别：critical 必须先 ack 才能关闭。
