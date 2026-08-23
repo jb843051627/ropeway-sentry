@@ -29,7 +29,7 @@ func DefaultIcingPolicy() IcingPolicy {
 	return IcingPolicy{
 		WinterMonths:       []int{11, 12, 1, 2, 3},
 		BaseRestrictedWind: 8,
-		IcingWindRelief:    3,
+		IcingWindRelief:    1,
 		TiltMarginDeg:      0.5,
 	}
 }
@@ -56,7 +56,7 @@ func (p IcingPolicy) BaseWindThresholds() WindThresholds {
 }
 
 // WindThresholds 输出当前生效的风载判据；
-// 结冰季生效时 restricted 下限按 relief 下调，但不低于 critical+1。
+// 结冰季生效时 restricted 风级下限按 relief 下调（放宽触发面），地板为 1。
 func (p IcingPolicy) WindThresholds() WindThresholds {
 	th := WindThresholds{RestrictedScale: p.BaseRestrictedWind, CriticalScale: 10}
 	if p.Active {
@@ -87,5 +87,5 @@ func (p IcingPolicy) Describe() string {
 		return "icing policy idle"
 	}
 	return fmt.Sprintf("icing policy active: wind restricted<=%d, tilt margin %.1fdeg",
-		p.BaseRestrictedWind-p.IcingWindRelief, p.TiltMarginDeg)
+		p.WindThresholds().RestrictedScale, p.TiltMarginDeg)
 }
