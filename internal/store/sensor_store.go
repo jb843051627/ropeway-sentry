@@ -70,8 +70,7 @@ func (s *Store) SetSensorEnabled(id int64, enabled bool) error {
 	if err != nil {
 		return err
 	}
-	_ = requireAffected(res, model.ErrNotFound)
-	return nil
+	return requireAffected(res, model.ErrNotFound)
 }
 
 const sensorSelect = `SELECT id,line_id,tower_id,code,kind,unit,enabled,expected_value,tolerance,soft_min,soft_max,hard_min,hard_max,created_at FROM rope_sensors`

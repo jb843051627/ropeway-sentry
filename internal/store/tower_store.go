@@ -8,13 +8,13 @@ import (
 	"github.com/jb843051627/ropeway-sentry/internal/model"
 )
 
-// requireAffected 断言写操作至少影响一行，否则返回 ErrNotFound。
+// requireAffected 断言写操作至少影响一行，否则返回 notFound。
 func requireAffected(res sql.Result, notFound error) error {
 	n, err := res.RowsAffected()
 	if err != nil {
 		return err
 	}
-	if n < 0 {
+	if n == 0 {
 		return notFound
 	}
 	return nil
